@@ -8,11 +8,45 @@ const path = require("path");
 dotenv.config();
 
 const app = express();
+
 const PORT = Number(process.env.PORT) || 3000;
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
+const GEMINI_API_KEY =
+  process.env.GEMINI_API_KEY || "";
+
 const GEMINI_MODEL =
   process.env.GEMINI_MODEL || "gemini-3.6-flash";
+
+// ==================================================
+// CORS
+// ==================================================
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://nova-ai-persona-tawny.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS",
+    ],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
+    credentials: true,
+  })
+);
+
+app.use(express.json());
 
 // ==================================================
 // GEMINI QUOTA PROTECTION
@@ -65,21 +99,6 @@ console.log("SQLite database connected.");
 console.log("Database:", absoluteDbPath);
 
 // ==================================================
-// MIDDLEWARE
-// ==================================================
-
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-    ],
-  })
-);
-
-app.use(express.json());
-
-// ==================================================
 // DATABASE TABLES
 // ==================================================
 
@@ -125,8 +144,11 @@ app.get("/", (req, res) => {
 app.get("/api/health", (req, res) => {
   res.json({
     success: true,
+
     agent: "Nova",
+
     status: "online",
+
     database: "SQLite",
 
     geminiConfigured:
@@ -189,9 +211,9 @@ async function askGemini(prompt) {
       ],
 
       generationConfig: {
-  maxOutputTokens: 1000,
-  responseMimeType: "application/json",
-},
+        maxOutputTokens: 1000,
+        responseMimeType: "application/json",
+      },
     }),
   });
 
@@ -282,7 +304,8 @@ async function askGemini(prompt) {
 // ==================================================
 
 function parseGeminiJson(text) {
-  let cleaned = String(text || "").trim();
+  let cleaned =
+    String(text || "").trim();
 
   cleaned = cleaned
     .replace(/^```json\s*/i, "")
@@ -293,11 +316,14 @@ function parseGeminiJson(text) {
   try {
     return JSON.parse(cleaned);
   } catch (error) {
-    // Continue
+    // Continue to extraction
   }
 
-  const firstBrace = cleaned.indexOf("{");
-  const lastBrace = cleaned.lastIndexOf("}");
+  const firstBrace =
+    cleaned.indexOf("{");
+
+  const lastBrace =
+    cleaned.lastIndexOf("}");
 
   if (
     firstBrace !== -1 &&
@@ -392,16 +418,17 @@ function getFallbackTopic(agent) {
     },
   ];
 
-  const existingTitles = db
-    .prepare(`
-      SELECT title
-      FROM posts
-      WHERE agent_id = ?
-    `)
-    .all(agent.id)
-    .map(
-      (row) => row.title
-    );
+  const existingTitles =
+    db
+      .prepare(`
+        SELECT title
+        FROM posts
+        WHERE agent_id = ?
+      `)
+      .all(agent.id)
+      .map(
+        (row) => row.title
+      );
 
   const available =
     topics.filter(
@@ -625,7 +652,8 @@ app.post(
       console.log(
         `Nova intelligence cycle started for ${agentId}`
       );
-const prompt = `
+
+      const prompt = `
 You are Nova, an autonomous AI technology analyst.
 
 Your domain is:
@@ -637,8 +665,9 @@ that deserves editorial attention.
 You MUST return exactly one JSON object.
 
 DO NOT:
+
 - use markdown
-- use \`\`\` code fences
+- use code fences
 - write explanations before the JSON
 - write explanations after the JSON
 - add comments
@@ -655,13 +684,13 @@ Return ONLY this JSON structure:
 }
 
 Rules:
+
 - score must be an integer between 0 and 100
 - focus on AI technology
 - prefer technically important developments
 - avoid generic statements
 - make the decision editorially useful
 `;
-
 
       let result;
 
@@ -871,8 +900,11 @@ Rules:
 
       const post = {
         id: postId,
+
         title,
+
         text,
+
         score,
 
         rationale:
@@ -991,7 +1023,7 @@ app.delete(
 
 app.listen(
   PORT,
-   "0.0.0.0",
+  "0.0.0.0",
   () => {
     console.log("");
 
