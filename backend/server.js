@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require("cors");
+
 const dotenv = require("dotenv");
 const Database = require("better-sqlite3");
 const fs = require("fs");
@@ -17,22 +17,50 @@ const GEMINI_API_KEY =
 const GEMINI_MODEL =
   process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
+
+
 // ==================================================
 // CORS
 // ==================================================
 
+const ALLOWED_ORIGIN =
+  "https://nova-ai-persona-tawny.vercel.app";
 
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
 
-app.use(
-  cors({
-    origin: "https://nova-ai-persona-tawny.vercel.app",
-    methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+  if (origin === ALLOWED_ORIGIN || origin === "http://localhost:5173" || origin === "http://127.0.0.1:5173") {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
 
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+
+  res.setHeader(
+    "Vary",
+    "Origin"
+  );
+
+  // IMPORTANT:
+  // Handle browser preflight requests ourselves.
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  next();
+});
 
 app.use(express.json());
+
+
+
 
 
   
