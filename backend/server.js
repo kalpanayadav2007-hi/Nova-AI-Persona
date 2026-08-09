@@ -17,31 +17,22 @@ const GEMINI_API_KEY =
 const GEMINI_MODEL =
   process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
-
-
 // ==================================================
 // CORS
 // ==================================================
 
 app.use(
   cors({
-    origin: "*",
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "PATCH",
-      "DELETE",
-      "OPTIONS",
-    ],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-    ],
+    origin: true,
+    methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-app.use(express.json());   
+app.use(express.json());
+
+
+  
 
 
 // ==================================================
