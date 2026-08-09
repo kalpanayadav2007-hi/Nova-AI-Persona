@@ -4,3 +4,78 @@ dist/
 .env.*
 !.env.example
 storage/*.db
+
+
+# ==========================================
+# ENVIRONMENT / SECRETS
+# ==========================================
+
+.env
+.env.*
+!.env.example
+!.env.example.local
+
+# ==========================================
+# NODE
+# ==========================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# BUILD OUTPUT
+# ==========================================
+
+dist/
+dist-ssr/
+build/
+
+# ==========================================
+# DATABASE / LOCAL STORAGE
+# ==========================================
+
+backend/storage/*.db
+backend/storage/*.db-shm
+backend/storage/*.db-wal
+
+
+backend/*.db
+backend/*.db-shm
+backend/*.db-wal
+backend/*.db-journal
+
+# ==========================================
+# LOGS
+# ==========================================
+
+logs/
+*.log
+
+# ==========================================
+# LOCAL CONFIG
+# ==========================================
+
+*.local
+
+# ==========================================
+# EDITORS
+# ==========================================
+
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==========================================
+# OS
+# ==========================================
+
+Thumbs.db
