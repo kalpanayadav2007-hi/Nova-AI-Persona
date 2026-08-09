@@ -22,32 +22,9 @@ const GEMINI_MODEL =
 // CORS
 // ==================================================
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  "https://nova-ai-persona-tawny.vercel.app",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests without an Origin header
-      // such as health checks and server-to-server requests.
-      if (!origin) {
-        return callback(null, true);
-      }
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      console.log("CORS blocked origin:", origin);
-
-      return callback(
-        new Error("Not allowed by CORS")
-      );
-    },
-
+    origin: true,
     methods: [
       "GET",
       "POST",
@@ -56,15 +33,14 @@ app.use(
       "DELETE",
       "OPTIONS",
     ],
-
     allowedHeaders: [
       "Content-Type",
       "Authorization",
     ],
-
     credentials: true,
   })
 );
+
 
 // Explicitly handle browser preflight requests.
 app.options("*", cors());
