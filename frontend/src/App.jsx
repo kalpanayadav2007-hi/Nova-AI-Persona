@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
+  import.meta.env.VITE_API_URL || "https://nova-backend-x8wy.onrender.com";
 
 const AGENT_STORAGE_KEY = "novaAgentId";
 const PERSONA_STORAGE_KEY = "novaPersona";
