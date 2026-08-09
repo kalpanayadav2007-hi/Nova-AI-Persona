@@ -1008,11 +1008,11 @@ app.listen(
     );
 
     console.log(
-      `Server: http://127.0.0.1:${PORT}`
+      `Server: http://0.0.0.0:${PORT}`
     );
 
     console.log(
-      `Health: http://127.0.0.1:${PORT}/api/health`
+      `Health: http://0.0.0.0:${PORT}/api/health`
     );
 
     console.log(
