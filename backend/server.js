@@ -17,6 +17,7 @@ const GEMINI_API_KEY =
 const GEMINI_MODEL =
   process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
+
 // ==================================================
 // CORS
 // ==================================================
@@ -29,7 +30,24 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // Allow requests without an Origin header
+      // such as health checks and server-to-server requests.
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.log("CORS blocked origin:", origin);
+
+      return callback(
+        new Error("Not allowed by CORS")
+      );
+    },
+
     methods: [
       "GET",
       "POST",
@@ -38,15 +56,21 @@ app.use(
       "DELETE",
       "OPTIONS",
     ],
+
     allowedHeaders: [
       "Content-Type",
       "Authorization",
     ],
+
     credentials: true,
   })
 );
 
-app.use(express.json());
+// Explicitly handle browser preflight requests.
+app.options("*", cors());
+
+app.use(express.json());    
+
 
 // ==================================================
 // GEMINI QUOTA PROTECTION
