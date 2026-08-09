@@ -21,13 +21,16 @@ const GEMINI_MODEL =
 // CORS
 // ==================================================
 
+
+
 app.use(
   cors({
-    origin: true,
+    origin: "https://nova-ai-persona-tawny.vercel.app",
     methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 app.use(express.json());
 
