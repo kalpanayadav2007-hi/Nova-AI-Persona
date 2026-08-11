@@ -1,4 +1,16 @@
 const express = require("express");
+const cors = require("cors");
+const app = express();
+
+app.use(
+  cors({
+    origin: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.use(express.json());
 
 const dotenv = require("dotenv");
 const Database = require("better-sqlite3");
@@ -7,7 +19,7 @@ const path = require("path");
 
 dotenv.config();
 
-const app = express();
+
 
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -22,6 +34,12 @@ const GEMINI_MODEL =
 // ==================================================
 // CORS
 // ==================================================
+
+
+
+
+
+
 
 const ALLOWED_ORIGIN =
   "https://nova-ai-persona-tawny.vercel.app";
